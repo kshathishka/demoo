@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Register from "./Reg";
-import Home from "./home";
+import Home from "./Home";
 function App() {
   return (
     <>
@@ -12,5 +12,8 @@ function App() {
       </Routes>
     </BrowserRouter>
     </>
+
   );
 }
+
+export default App;
