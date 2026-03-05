@@ -10,16 +10,28 @@ function Register()
       password:""
     }
   )
+  const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const changeName = (e)=>
   {
     setData({...data,[e.target.name]:e.target.value})
   }
 
-  const regSubmit = () =>
+  const regSubmit = async () =>
   {
-    const res=axios.post("http://localhost:8081/register",data)
-    console.log(res)
+    if (loading) return
+    setLoading(true)
+    try {
+      const res = await axios.post("https://demoobackend.onrender.com/register", data)
+      console.log(res.data)
+      setMessage(typeof res.data === "string" ? res.data : "Registration successful")
+    } catch (error) {
+      const apiMessage = error?.response?.data
+      setMessage(typeof apiMessage === "string" ? apiMessage : "Registration failed")
+    } finally {
+      setLoading(false)
+    }
   }
 
 
@@ -55,10 +67,15 @@ function Register()
 
          <button
            onClick={regSubmit}
+           disabled={loading}
            className="btn btn-success w-100"
          >
-           register
+           {loading ? "Registering..." : "register"}
          </button>
+
+         {message && (
+           <p className="text-center mt-3 mb-0">{message}</p>
+         )}
        </div>
     </>
   )
